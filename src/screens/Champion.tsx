@@ -26,6 +26,8 @@ const ChampName = styled.h1`
 `;
 
 const ChampStroy = styled.p`
+  width: 100%;
+  max-width: 500px;
   font-size: 0.8rem;
   margin-bottom: 70px;
   line-height: 1.5;
