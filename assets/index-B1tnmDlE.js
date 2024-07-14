@@ -214,6 +214,8 @@ table {
   font-weight: 800;
   margin-bottom: 20px;
 `,mL=Rt.p`
+  width: 100%;
+  max-width: 500px;
   font-size: 0.8rem;
   margin-bottom: 70px;
   line-height: 1.5;
