@@ -1,6 +1,9 @@
 import { Outlet } from "react-router-dom";
-import { createGlobalStyle } from "styled-components";
-import Header from "./components/Header";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
+import DarkmodeButton from "./components/DarkmodeButton";
+import { darkTheme, lightTheme } from "./theme";
+import { useRecoilValue } from "recoil";
+import { isDarkAtom } from "./atom";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -30,6 +33,14 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
+	background-color: ${(props) => props.theme.bgColor};
+	color: ${(props) => props.theme.textColor};
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 30px;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 ol, ul {
 	list-style: none;
@@ -49,11 +60,15 @@ table {
 `;
 
 function App() {
+  const isDark = useRecoilValue(isDarkAtom);
+
   return (
     <>
-      <GlobalStyle />
-      <Header />
-      <Outlet />
+      <ThemeProvider theme={isDark ? lightTheme : darkTheme}>
+        <GlobalStyle />
+        <DarkmodeButton />
+        <Outlet />
+      </ThemeProvider>
     </>
   );
 }
