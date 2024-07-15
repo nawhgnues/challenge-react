@@ -51,6 +51,7 @@ const RoleList = styled.ul`
 const ChampName = styled.h1`
   font-size: 1rem;
   margin-bottom: 10px;
+  word-break: keep-all;
 `;
 
 const Card = ({ championInfo: { name, title, tags, id } }: { championInfo: ChampionCardInfoData }) => {
@@ -58,7 +59,7 @@ const Card = ({ championInfo: { name, title, tags, id } }: { championInfo: Champ
 
   return (
     <CardFrame>
-      <Link to={`/champion/${id}`}>
+      <Link to={`/challenge-react/champion/${id}`}>
         <ChampImg src={img} alt="" />
       </Link>
       <ChampNameBox>

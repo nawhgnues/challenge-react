@@ -39,7 +39,7 @@ body {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	padding: 30px;
+	padding: 100px 30px;
 	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 ol, ul {

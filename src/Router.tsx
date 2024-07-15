@@ -7,18 +7,17 @@ import Champion from "./screens/Champion";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/challenge-react/",
     element: <App />,
     children: [
       {
-        path: "/home",
+        path: "",
         element: <Home />,
         errorElement: <ErrorComponent />,
       },
       {
-        path: "/champion/:championId",
+        path: "champion/:championId",
         element: <Champion />,
-        errorElement: <ErrorComponent />,
       },
     ],
     errorElement: <NotFound />,

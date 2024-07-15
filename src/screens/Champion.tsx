@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 const ChampInfoContainer = styled.div`
   position: relative;
@@ -97,7 +98,7 @@ const TipBox = styled.div`
 
 const BackButtonWrapper = styled.div`
   position: absolute;
-  top: 20px;
+  top: -50px;
   left: 0;
 
   a {
@@ -115,6 +116,12 @@ const BackButtonWrapper = styled.div`
   }
 `;
 
+const Contents = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 interface Spell {
   id: string;
   name: string;
@@ -138,7 +145,11 @@ function Champion() {
   useEffect(() => {
     (async () => {
       const response = await (
-        await fetch(`https://ddragon.leagueoflegends.com/cdn/14.13.1/data/ko_KR/champion/${param.championId}.json`)
+        await fetch(
+          `https://ddragon.leagueoflegends.com/cdn/14.13.1/data/${localStorage.getItem("lang")}/champion/${
+            param.championId
+          }.json`
+        )
       ).json();
       setChampInfo(response.data[param.championId!]);
     })();
@@ -147,51 +158,66 @@ function Champion() {
   const key = ["Q", "W", "E", "R"];
   return (
     <ChampInfoContainer>
+      <Helmet>
+        <title>{`${champInfo?.name === undefined ? "Loading..." : `${champInfo?.name}`}`}</title>
+      </Helmet>
       <BackButtonWrapper>
-        <Link to={"/home"}>← Champion list</Link>
+        <Link to={"/challenge-react/"}>← Champion list</Link>
       </BackButtonWrapper>
       <SplashImg
         src={`https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${param.championId}_0.jpg`}
         alt="Champ Splash Img"
       />
-      <ChampName>
-        {champInfo?.name}, {champInfo?.title}
-      </ChampName>
-      <ChampStroy>{champInfo?.lore}</ChampStroy>
 
-      <ContentsBox>
-        <SkillBox>
-          <h2># Skills</h2>
-          <ul>
-            {champInfo?.spells.map((spell, idx) => {
-              return (
-                <li key={idx}>
-                  <h3>
-                    {spell.name}({key[idx]})
-                  </h3>
-                  <p>{spell.description}</p>
-                </li>
-              );
-            })}
-          </ul>
-        </SkillBox>
+      {champInfo ? (
+        <Contents>
+          <ChampName>
+            {champInfo?.name}, {champInfo?.title}
+          </ChampName>
+          <ChampStroy>{champInfo?.lore}</ChampStroy>
+          <ContentsBox>
+            <SkillBox>
+              <h2># Skills</h2>
+              <ul>
+                {champInfo?.spells.map((spell, idx) => {
+                  return (
+                    <li key={idx}>
+                      <h3>
+                        {spell.name}({key[idx]})
+                      </h3>
+                      <p>{spell.description}</p>
+                    </li>
+                  );
+                })}
+              </ul>
+            </SkillBox>
 
-        <TipBox>
-          <h2># Tips</h2>
-          <ul>
-            {champInfo?.allytips.map((tip, index) => {
-              return <li key={index}>{tip}</li>;
-            })}
-          </ul>
+            <TipBox>
+              {champInfo.allytips.length !== 0 ? (
+                <>
+                  <h2># Tips</h2>
+                  <ul>
+                    {champInfo.allytips.map((tip, index) => {
+                      return <li key={index}>{tip}</li>;
+                    })}
+                  </ul>
+                </>
+              ) : null}
 
-          <ul>
-            <p>vs {champInfo?.name}</p>
-            {champInfo?.enemytips.map((tip, index) => {
-              return <li key={index}>{tip}</li>;
-            })}
-          </ul>
-        </TipBox>
-      </ContentsBox>
+              {champInfo.enemytips.length !== 0 ? (
+                <>
+                  <p>vs {champInfo.name}</p>
+                  {champInfo?.enemytips.map((tip, index) => {
+                    return <li key={index}>{tip}</li>;
+                  })}
+                </>
+              ) : null}
+            </TipBox>
+          </ContentsBox>
+        </Contents>
+      ) : (
+        <h1>Loading...</h1>
+      )}
     </ChampInfoContainer>
   );
 }
